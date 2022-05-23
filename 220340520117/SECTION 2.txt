@@ -1,0 +1,54 @@
+#SECTION II
+##################(1)
+create table TEMPP(Answer boolean,descrip varchar(20) );
+insert into tempp values(true,'Dont know');
+truncate tempp;
+select * from TEMPP;
+delimiter $$
+create procedure PROC1(S1 varchar(20),S2 varchar(20))
+begin
+declare flag int default 0;
+set flag=instr(S1,S2);
+if flag=0 then
+insert into tempp values(false,'not matching');
+end if; 
+if flag<>0 then
+insert into tempp values(true,'matching');
+end if; 
+end;
+$$
+delimiter ;
+call proc1('dac','cdac');
+call proc1('Z','cdac');
+# output in SECTION 2 Q1.png
+
+
+
+##################(2)
+
+create table func(txt varchar(25));
+delimiter $$
+create function  FUNC1(a int,b int ,c int )
+returns boolean
+Deterministic
+begin
+if a+b<=c   then
+return false;
+end if;
+if a+c<=b then
+return false;
+end if;
+if b+c<=a then
+return false;
+end if;
+return true;
+end;
+$$
+delimiter ;
+insert into func values(func1(12,20,18));
+insert into func values(func1(12,20,3));
+select * from func;
+# Output in SECTION 2 Q2.png
+
+
+
